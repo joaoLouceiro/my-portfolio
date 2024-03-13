@@ -3,19 +3,35 @@
 import Link from 'next/link';
 import { useState } from 'react';
 
+const tabsArr = [
+	{ text: 'About', href: '/#about', active: true },
+	{ text: 'Projects', href: '/#projects', active: false },
+	{ text: 'Contacts', href: '/#contacts', active: false },
+];
+
 export default function Navbar() {
-	useState;
+	const [tabs, setTabs] = useState(tabsArr);
+	function handleClick(tabKey: string) {
+		const newTabs = tabs.map((t) => {
+			return { ...t, active: t.href === tabKey };
+		});
+		setTabs(newTabs);
+	}
+
 	return (
 		<div className="flex justify-end py-4 relative">
-			<Link className="hover:animate-pulse mx-8" href={'/#about'}>
-				About
-			</Link>
-			<Link className="hover:animate-pulse mx-8" href={'/projects'}>
-				Projects
-			</Link>
-			<Link className="hover:animate-pulse mx-8" href={'/contacts'}>
-				Contacts
-			</Link>
+			{tabsArr.map((tab) => (
+				<Link
+					className={`hover:animate-pulse mx-8 relative ${
+						tab.active ? 'border-b-2' : null
+					}`}
+					onClick={() => handleClick(tab.href)}
+					key={tab.href}
+					href={tab.href}
+				>
+					{tab.text}
+				</Link>
+			))}
 		</div>
 	);
 }
